@@ -1,12 +1,12 @@
 process DownloadFromSynapse {
     input:
-    val synapse_id from params.synapse_id
+    val synapse_id
 
     output:
-    path '*.fastq.gz'
+    path '*.fastq.gz', optional: true
 
     script:
     """
-    python download_synapse.py ${synapse_id}
+    python3 ${baseDir}/modules/download_synapse.py ${synapse_id}
     """
 }

@@ -1,12 +1,15 @@
+nextflow.enable.dsl=2
+
 process QC {
     input:
-    path file from params.input_files
+    path fastq_file
 
     output:
-    path 'fastqc_results/*' into qc_results
+    path "fastqc_results/*", emit: qc_output
 
     script:
     """
-    fastqc ${file} --outdir fastqc_results
+    mkdir -p fastqc_results
+    fastqc ${fastq_file} --outdir fastqc_results
     """
 }

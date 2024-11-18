@@ -1,12 +1,12 @@
 process MultiQC {
     input:
-    path results from params.input_results
+    path qc_results_files
 
     output:
     path 'multiqc_report.html'
 
     script:
     """
-    multiqc ${results} --outdir .
+    multiqc ${qc_results_files} --outdir .
     """
 }

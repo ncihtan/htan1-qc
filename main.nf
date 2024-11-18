@@ -6,18 +6,18 @@ include { MultiQC } from './modules/multiqc.nf'
 
 workflow {
     // Get the Synapse ID from command-line arguments or use a default value
-    synapse_id = params.synapse_id ?: 'syn22093319'  // Replace with your default Synapse ID if needed
+    synapse_id = params.synapse_id ?: 'syn22093319'
 
+    // Download files from Synapse
     downloaded_files = DownloadFromSynapse(synapse_id)
 
-    fastq_files = downloaded_files.filter { it.endsWith('.fastq.gz') }
+    // Properly filter to get only .fastq.gz files
+    fastq_files = downloaded_files.flatten().filter { it.toString().endsWith('.fastq.gz') }
 
-    // Run QC only on .fastq.gz files
-    if (fastq_files.size() > 0) {
-        println "Found ${fastq_files.size()} .fastq.gz files for QC."
-        qc_results = QC(fastq_files)
-        MultiQC(qc_results)
-    } else {
-        println "No .fastq.gz files found for QC."
-    }
+    // Run QC on each .fastq.gz file directly
+    qc_results = QC(fastq_files)
+
+    // Run MultiQC on the collected QC results
+    MultiQC(qc_results)
 }
+
