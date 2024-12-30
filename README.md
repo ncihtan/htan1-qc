@@ -1,7 +1,7 @@
 # Nextflow Pipeline for Genomic Data QC and MultiQC Reporting
 
 ## Overview
-This pipeline is designed to download `.fastq.gz` files from Synapse, based on a provided CSV input file, run quality control (QC) using FastQC, and generate a combined report using MultiQC. The workflow is implemented using Nextflow for easy reproducibility and extensibility.
+This pipeline is designed to download `.fastq.gz` files from a Synapse repository, run quality control (QC) using FastQC, and generate a combined report using MultiQC. The workflow is implemented using Nextflow for easy reproducibility and extensibility.
 
 ![Nextflow Genomic Data QC Pipeline](pipeline_overview.jpg)
 
@@ -33,44 +33,31 @@ Alternatively, you can use the provided `install_dependencies.sh` script to inst
 3. Log in to Synapse:
    - Use `synapse login` or ensure you have a `.synapseConfig` file set up in your home directory.
 
-## Input File Format
-The pipeline requires a CSV input file with the following format:
-
-| synapse_id   | file_name          |
-|--------------|--------------------|
-| syn12345678  | sample1.fastq.gz   |
-| syn87654321  | sample2.fastq.gz   |
-
-### Example Input CSV
-Save the CSV file as `input.csv` or another file name of your choice:
-
-```csv
-synapse_id,file_name
-syn12345678,sample1.fastq.gz
-syn87654321,sample2.fastq.gz
-```
 
 ## Running the Pipeline
-Run the pipeline with the specified CSV input file:
+Run the pipeline with a specified Synapse ID:
 
 ```bash
-nextflow run main.nf --csv_file <path_to_input_csv>
+nextflow run main.nf --synapse_id <your_synapse_id>
 ```
 
 ### Parameters
-- `--csv_file`: The path to the input CSV file containing `synapse_id` and `file_name` columns.
+- `--synapse_id`: The Synapse ID of the data folder or file containing `.fastq.gz` files (e.g., `syn22093319`).
 
 ## Testing Instructions
-To test the workflow, you can use the provided `test_input.csv` file in the repository:
+
+To test the workflow, you can use the folder `syn64097744` as the test folder. The files required for testing are also included in this folder.
+
+To run the test, use the following command:
 
 ```bash
-nextflow run main.nf --csv_file test_input.csv
+nextflow run main.nf --synapse_id syn64097744
 ```
 
-This command will execute the workflow using the provided test CSV and its contents.
+This command will execute the workflow using the provided test folder and its contents.
 
 ## Workflow Steps
-1. **Download Data**: Data is downloaded from Synapse based on the `synapse_id` and `file_name` entries in the CSV.
+1. **Download Data**: Data is downloaded from Synapse using the given Synapse ID.
 2. **Run FastQC**: Each `.fastq.gz` file is processed using FastQC to generate quality control metrics.
 3. **Run MultiQC**: The outputs from all FastQC runs are aggregated into a single report using MultiQC.
 
@@ -84,7 +71,7 @@ This command will execute the workflow using the provided test CSV and its conte
 ## Troubleshooting
 - Ensure Synapse authentication is set up properly.
 - Verify that `FastQC` and `MultiQC` are installed or available in your container.
-- Confirm that the CSV input file is correctly formatted and accessible.
 
 ## License
 This project is licensed under the MIT License.
+
