@@ -1,12 +1,12 @@
-process DownloadFromCSV {
+process DownloadFromSynapse {
     input:
-    path csv_file
+    val synapse_id
 
     output:
     path '*.fastq.gz', optional: true
 
     script:
     """
-    python3 ${baseDir}/modules/download_synapse_csv.py ${csv_file}
+    python3 ${baseDir}/modules/download_synapse.py ${synapse_id}
     """
 }
