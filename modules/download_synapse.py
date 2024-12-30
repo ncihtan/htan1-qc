@@ -1,32 +1,24 @@
 import sys
-import pandas as pd
 import synapseclient
 import os
 
-def download_files_from_csv(csv_file):
-    # Initialize Synapse client
+def download_files(synapse_id):
     syn = synapseclient.Synapse()
-    syn.login()  # Assumes user credentials are set up
+    syn.login()  # Assumes user is logged in with credentials or has a .synapseConfig file set up
 
-    # Load CSV file
-    df = pd.read_csv(csv_file)
+    # Get all files in the specified Synapse entity
+    files = syn.getChildren(synapse_id)
 
     downloaded_files = []
-    for _, row in df.iterrows():
-        synapse_id = row['synapse_id']
-        file_name = row['file_name']
-
-        # Fetch file from Synapse
-        entity = syn.get(synapse_id, downloadLocation='.')
-        if entity.name == file_name:
+    for file in files:
+        if file['name'].endswith('.fastq.gz'):
+            entity = syn.get(file['id'], downloadLocation='.')
             downloaded_files.append(entity.name)
             print(f"Downloaded: {entity.name}")
-        else:
-            print(f"File {file_name} not found for Synapse ID {synapse_id}")
-
+    
     if not downloaded_files:
-        print("No files downloaded from the provided CSV file.")
+        print("No .fastq.gz files found in the specified Synapse ID.")
 
 if __name__ == "__main__":
-    csv_file = sys.argv[1]
-    download_files_from_csv(csv_file)
+    synapse_id = sys.argv[1]
+    download_files(synapse_id)
