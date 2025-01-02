@@ -5,11 +5,11 @@ include { QC } from './modules/qc.nf'
 include { MultiQC } from './modules/multiqc.nf'
 
 workflow {
-    // Get the Synapse ID from command-line arguments or use a default value
-    synapse_id = params.synapse_id ?: 'syn22093319'
+    // Get the input CSV file from command-line arguments
+    input_csv = params.input_csv ?: 'input.csv'
 
-    // Download files from Synapse
-    downloaded_files = DownloadFromSynapse(synapse_id)
+    // Download files specified in the input CSV
+    downloaded_files = DownloadFromSynapse(input_csv)
 
     // Properly filter to get only .fastq.gz files
     fastq_files = downloaded_files.flatten().filter { it.toString().endsWith('.fastq.gz') }
@@ -20,4 +20,3 @@ workflow {
     // Run MultiQC on the collected QC results
     MultiQC(qc_results)
 }
-
