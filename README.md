@@ -27,13 +27,16 @@ This pipeline is designed to download `.fastq.gz` files from a Synapse repositor
    - Ensure you are logged in using `synapse login` or have a `.synapseConfig` file set up in your home directory.
 
 ## Running the Pipeline
-Run the pipeline with a specified Synapse ID:
+Run the pipeline with a prepared sample sheet (csv):
 ```bash
-nextflow run main.nf --synapse_id 'synXXXXXX'
+nextflow run main.nf --input_csv /absolute/path/to/input.csv
 ```
 
 ### Parameters
-- `--synapse_id`: The Synapse ID of the data folder or file containing `.fastq.gz` files (e.g., `syn22093319`).
+input_csv: Absolute path to the input CSV file. This file should have two columns:
+
+- filename: The exact name of the file to download (e.g., file1.fastq.gz).
+- synapse_id: The Synapse ID containing the file (e.g., syn12345678)
 
 ## Output
 - The pipeline generates a `multiqc_report.html` file that combines all the QC outputs in a single report.
@@ -48,7 +51,8 @@ nextflow run main.nf --synapse_id 'synXXXXXX'
 - Verify that `FastQC` and `MultiQC` are installed or available in your container.
 
 ## Example Usage
+Use `input.csv'` in `/test` to test the pipeline
 ```bash
-nextflow run main.nf --synapse_id 'syn22093319'
+nextflow run main.nf --input_csv /path/to/input.csv
 ```
 This will download all `.fastq.gz` files from the specified Synapse ID, run QC on them, and produce a `multiqc_report.html` summarizing the QC results.
