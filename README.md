@@ -14,7 +14,7 @@ This pipeline is designed to download `.fastq.gz` files from a Synapse repositor
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/project.git
+   git clone https://github.com/ncihtan/nf-htan-qc.git
    cd project
    ```
 
