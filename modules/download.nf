@@ -1,4 +1,6 @@
 process DownloadFromSynapse {
+    container 'ghcr.io/sage-bionetworks/synapsepythonclient:v4.6.1'
+
     input:
     val synapse_id
 
