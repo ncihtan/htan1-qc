@@ -1,6 +1,6 @@
-nextflow.enable.dsl=2
-
 process QC {
+    container 'biocontainers/fastqc:v0.11.9_cv7'
+
     input:
     path fastq_file
 
